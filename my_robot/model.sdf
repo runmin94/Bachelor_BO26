@@ -3,14 +3,29 @@
   <model name="H_beam">
     <static>true</static>
 
+    <self_collide>true</self_collide>
+
+    <link name="world_fix">
+    </link> <!-- I needed to close the link tag -->
+    <joint name ="lwb_world" type="fixed">
+        <parent>world</parent>
+        <child>left_wall_beam</child> <!-- put here the name of the base link -->
+    </joint> <!-- close the joint tag -->
+
+    <joint name ="rwb_world" type="fixed">
+        <parent>world</parent>
+        <child>right_wall_beam</child> <!-- put here the name of the base link -->
+    </joint> <!-- close the joint tag -->
+
 
     <link name='left_wall_beam'>
-      <pose> 5.5 0 3.75 0 0 0</pose>
+      <pose> 5.5 0 0 0 0 0</pose>
 
       <collision name='collision_lwb'>
+        <pose> 0 0 1.75 0 0 0</pose>
         <geometry>
           <box>
-            <size> 1 10 0.5 </size>
+            <size> 1 10 3.3 </size>
           </box>
         </geometry>
       </collision>
@@ -18,62 +33,23 @@
 
       <visual name='visual_lwb'>
         <geometry>
-          <box>
-            <size> 1 10 0.5 </size>
-          </box>
+          <mesh>
+            <uri>model://my_robot/meshes/support_arch_v2.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
         </geometry>
       </visual>
     </link>
 
-    <link name='left_wall_beam_front_support'>
-      <pose> 5.5 5 2 0 0 0</pose>
-
-      <collision name='collision_lwbfs'>
-        <geometry>
-          <box>
-            <size> 1 1 4 </size>
-          </box>
-        </geometry>
-      </collision>
-
-
-      <visual name='visual_lwbfs'>
-        <geometry>
-          <box>
-            <size> 1 1 4 </size>
-          </box>
-        </geometry>
-      </visual>
-    </link>
-
-    <link name='left_wall_beam_back_support'>
-      <pose> 5.5 -5 2 0 0 0</pose>
-
-      <collision name='collision_lwbbs'>
-        <geometry>
-          <box>
-            <size> 1 1 4 </size>
-          </box>
-        </geometry>
-      </collision>
-
-
-      <visual name='visual_lwbbs'>
-        <geometry>
-          <box>
-            <size> 1 1 4 </size>
-          </box>
-        </geometry>
-      </visual>
-    </link>
 
     <link name='right_wall_beam'>
-      <pose> -5.5 0 3.75 0 0 0</pose>
+      <pose> -5.5 0 0 0 0 0</pose>
 
       <collision name='collision_rwb'>
+        <pose> 0 0 1.75 0 0 0</pose>
         <geometry>
           <box>
-            <size> 1 10 0.5 </size>
+            <size> 1 10 3.3 </size>
           </box>
         </geometry>
       </collision>
@@ -81,191 +57,227 @@
 
       <visual name='visual_rwb'>
         <geometry>
-          <box>
-            <size> 1 10 0.5 </size>
-          </box>
+          <!-- <box>
+            <size> 1 11 0.5 </size>
+          </box> -->
+          <mesh>
+            <uri>model://my_robot/meshes/support_arch_v2.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
         </geometry>
       </visual>
     </link>
 
-    <link name='right_wall_beam_front_support'>
-      <pose> -5.5 5 2 0 0 0</pose>
+    <link name='h_beam'>
+      <pose> 0 -0.5 5 0 0 0</pose>
 
-      <collision name='collision_rwbfs'>
+      <collision name='collision_hb'>
+        <pose> 0 0.5 -0.75 0 0 0</pose>
         <geometry>
           <box>
-            <size> 1 1 4 </size>
+            <size> 10 1 0.1 </size>
           </box>
         </geometry>
       </collision>
 
 
-      <visual name='visual_rwbfs'>
+      <visual name='visual_hb'>
         <geometry>
-          <box>
-            <size> 1 1 4 </size>
-          </box>
+          <mesh>
+            <uri>model://my_robot/meshes/H-Beam_v3.stl</uri>
+            <scale>1 1 1</scale>
+          </mesh>
         </geometry>
       </visual>
     </link>
 
-    <link name='right_wall_beam_back_support'>
-      <pose> -5.5 -5 2 0 0 0</pose>
+    <joint type="prismatic" name="h_beam_hinge">
+      <pose>0 0 0 0 0 0</pose>
+      <child>h_beam</child>
+      <parent>right_wall_beam</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower> -4 </lower>
+          <upper> 4 </upper>
+        </limit>
+      </axis>
+    </joint>
 
-      <collision name='collision_rwbbs'>
+    <joint type="prismatic" name="h_beam_hinge_l">
+      <pose>0 0 0 0 0 0</pose>
+      <child>h_beam</child>
+      <parent>left_wall_beam</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower> -4 </lower>
+          <upper> 4 </upper>
+        </limit>
+      </axis>
+    </joint>
+
+    <!-- <link name="left_front_h-beam_wheel">
+      <pose>5.4 0.65 3.85 1.57057 0 1.57057</pose>
+      <collision name="collision_lfhbw">
+        <geometry>
+          <cylinder>
+            <radius>0.35</radius>
+            <length>0.2</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="lfhbw">
+        <geometry>
+          <cylinder>
+            <radius>0.35</radius>
+            <length>0.2</length>
+          </cylinder>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="left_back_h-beam_wheel_hinge">
+      <pose>0 0.1 0 0 0 0</pose>
+      <child>left_front_h-beam_wheel</child>
+      <parent>h_beam</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+    <link name="left_back_h-beam_wheel">
+      <pose>5.4 -0.65 3.85 1.57057 0 1.57057</pose>
+      <collision name="collision_lbhbw">
+        <geometry>
+          <cylinder>
+            <radius>0.35</radius>
+            <length>0.2</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="lbhbw">
+        <geometry>
+          <cylinder>
+            <radius>0.35</radius>
+            <length>0.2</length>
+          </cylinder>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="left_back_h-beam_wheel_hinge">
+      <pose>0 0.1 0 0 0 0</pose>
+      <child>left_back_h-beam_wheel</child>
+      <parent>h_beam</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+    <link name="right_front_h-beam_wheel">
+      <pose>-5.4 0.65 3.85 1.57057 0 1.57057</pose>
+      <collision name="collision_rfhbw">
+        <geometry>
+          <cylinder>
+            <radius>0.35</radius>
+            <length>0.2</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="rfhbw">
+        <geometry>
+          <cylinder>
+            <radius>0.35</radius>
+            <length>0.2</length>
+          </cylinder>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="right_front_h-beam_wheel_hinge">
+      <pose>0 0.1 0 0 0 0</pose>
+      <child>right_front_h-beam_wheel</child>
+      <parent>h_beam</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+    <link name="right_back_h-beam_wheel">
+      <pose>-5.4 -0.65 3.85 1.57057 0 1.57057</pose>
+      <collision name="collision_rbhbw">
+        <geometry>
+          <cylinder>
+            <radius>0.35</radius>
+            <length>0.2</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name="rbhbw">
+        <geometry>
+          <cylinder>
+            <radius>0.35</radius>
+            <length>0.2</length>
+          </cylinder>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="right_back_h-beam_wheel_hinge">
+      <pose>0 0.1 0 0 0 0</pose>
+      <child>right_back_h-beam_wheel</child>
+      <parent>h_beam</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint> -->
+
+
+    <link name='trolly'>
+      <pose> 0 0 3.8 0 0 1.57057</pose>
+
+      <collision name='collision_tr'>
+        <pose> 0 0 0 0 0 0</pose>
         <geometry>
           <box>
-            <size> 1 1 4 </size>
+            <size> 1.5 1.3 0.1 </size>
           </box>
         </geometry>
       </collision>
 
 
-      <visual name='visual_rwbbs'>
+      <visual name='visual_tr'>
         <geometry>
-          <box>
-            <size> 1 1 4 </size>
-          </box>
+          <mesh>
+            <uri>model://my_robot/trolly_v2.stl</uri>
+            <scale>0.01 0.01 0.01</scale>
+          </mesh>
         </geometry>
       </visual>
     </link>
 
+    <joint type="prismatic" name="trolly_hinge">
+      <pose>0 0.1 0 0 0 0</pose>
+      <child>trolly</child>
+      <parent>h_beam</parent>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower> -4 </lower>
+          <upper> 4 </upper>
+        </limit>
+      </axis>
+    </joint>
 
 
 
-    <link name='bottom_beam'>
-      <pose> 0 0 4.25 0 0 0</pose>
-
-      <collision name='collision_bb'>
-        <geometry>
-          <box>
-            <size> 11 1 0.1 </size>
-          </box>
-        </geometry>
-      </collision>
-
-
-      <visual name='visual_bb'>
-        <geometry>
-          <box>
-            <size> 11 1 0.1 </size>
-          </box>
-        </geometry>
-      </visual>
-    </link>
-
-    <link name='midsection'>
-      <pose> 0 0 4.65 0 0 0</pose>
-
-      <collision name='collision_ms'>
-        <geometry>
-          <box>
-            <size> 11 0.1 0.75 </size>
-          </box>
-        </geometry>
-      </collision>
-
-
-      <visual name='visual_ms'>
-        <geometry>
-          <box>
-            <size> 11 0.1 0.75 </size>
-          </box>
-        </geometry>
-      </visual>
-    </link>
-
-    <link name='top_beam'>
-      <pose> 0 0 5.0 0 0 0</pose>
-
-      <collision name='collision_tb'>
-        <geometry>
-          <box>
-            <size> 11 1 0.1 </size>
-          </box>
-        </geometry>
-      </collision>
-
-
-      <visual name='visual_tb'>
-        <geometry>
-          <box>
-            <size> 11 1 0.1 </size>
-          </box>
-        </geometry>
-      </visual>
-    </link>
-
-    <link name='trolly_leftwall'>
-      <pose> 0 0.6 4.25 0 0 0</pose>
-
-      <collision name='collision_tr_lf'>
-        <geometry>
-          <box>
-            <size> 1 0.1 1 </size>
-          </box>
-        </geometry>
-      </collision>
-
-
-      <visual name='visual_tr_lf'>
-        <geometry>
-          <box>
-            <size> 1 0.1 1 </size>
-          </box>
-        </geometry>
-      </visual>
-    </link>
-
-    <link name='trolly_rightwall'>
-      <pose> 0 -0.6 4.25 0 0 0</pose>
-
-      <collision name='collision_tr_rw'>
-        <geometry>
-          <box>
-            <size> 1 0.1 1 </size>
-          </box>
-        </geometry>
-      </collision>
-
-
-      <visual name='visual_tr_rw'>
-        <geometry>
-          <box>
-            <size> 1 0.1 1 </size>
-          </box>
-        </geometry>
-      </visual>
-    </link>
-
-    <link name='trolly_floor'>
-      <pose> 0 0 3.8 0 0 0</pose>
-
-      <collision name='collision_tr_fl'>
-        <geometry>
-          <box>
-            <size> 1 1.1 0.1 </size>
-          </box>
-        </geometry>
-      </collision>
-
-
-      <visual name='visual_tr_fl'>
-        <geometry>
-          <box>
-            <size> 1 1.2 0.1 </size>
-          </box>
-        </geometry>
-      </visual>
-    </link>
-
-
-    <link name="left_front_wheel">
+    <!-- <link name="left_front_wheel">
       <pose>0.35 0.45 4.5 1.57057 0 0</pose>
       <collision name="collision_lfw">
         <geometry>
           <cylinder>
-            <radius>0.2</radius>
+            <radius>0.25</radius>
             <length>0.2</length>
           </cylinder>
         </geometry>
@@ -273,7 +285,7 @@
       <visual name="lfw">
         <geometry>
           <cylinder>
-            <radius>0.2</radius>
+            <radius>0.25</radius>
             <length>0.2</length>
           </cylinder>
         </geometry>
@@ -283,7 +295,7 @@
     <joint type="revolute" name="left_front_wheel_hinge">
       <pose>0 0.1 0 0 0 0</pose>
       <child>left_front_wheel</child>
-      <parent>trolly_leftwall</parent>
+      <parent>trolly</parent>
       <axis>
         <xyz>0 1 0</xyz>
       </axis>
@@ -295,7 +307,7 @@
       <collision name="collision_lbw">
         <geometry>
           <cylinder>
-            <radius>0.2</radius>
+            <radius>0.25</radius>
             <length>0.2</length>
           </cylinder>
         </geometry>
@@ -303,7 +315,7 @@
       <visual name="lbw">
         <geometry>
           <cylinder>
-            <radius>0.2</radius>
+            <radius>0.25</radius>
             <length>0.2</length>
           </cylinder>
         </geometry>
@@ -313,7 +325,7 @@
     <joint type="revolute" name="left_back_wheel_hinge">
       <pose> 0 0.1 0 0 0 0</pose>
       <child>left_back_wheel</child>
-      <parent>trolly_leftwall</parent>
+      <parent>trolly</parent>
       <axis>
         <xyz>0 1 0</xyz>
       </axis>
@@ -324,7 +336,7 @@
       <collision name="collision_rfw">
         <geometry>
           <cylinder>
-            <radius>0.2</radius>
+            <radius>0.25</radius>
             <length>0.2</length>
           </cylinder>
         </geometry>
@@ -332,7 +344,7 @@
       <visual name="rfw">
         <geometry>
           <cylinder>
-            <radius>0.2</radius>
+            <radius>0.25</radius>
             <length>0.2</length>
           </cylinder>
         </geometry>
@@ -342,7 +354,7 @@
     <joint type="revolute" name="right_front_wheel_hinge">
       <pose>0 -0.1 0 0 0 0</pose>
       <child>right_front_wheel</child>
-      <parent>trolly_rightwall</parent>
+      <parent>trolly</parent>
       <axis>
         <xyz>0 1 0</xyz>
       </axis>
@@ -353,7 +365,7 @@
       <collision name="collision_rbw">
         <geometry>
           <cylinder>
-            <radius>0.2</radius>
+            <radius>0.25</radius>
             <length>0.2</length>
           </cylinder>
         </geometry>
@@ -361,7 +373,7 @@
       <visual name="rbw">
         <geometry>
           <cylinder>
-            <radius>0.2</radius>
+            <radius>0.25</radius>
             <length>0.2</length>
           </cylinder>
         </geometry>
@@ -371,11 +383,11 @@
     <joint type="revolute" name="right_back_wheel_hinge">
       <pose> 0 -0.1 0 0 0 0</pose>
       <child>right_back_wheel</child>
-      <parent>trolly_rightwall</parent>
+      <parent>trolly</parent>
       <axis>
         <xyz>0 1 0</xyz>
       </axis>
-    </joint>
+    </joint> -->
 
 
   </model>
