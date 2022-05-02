@@ -2,7 +2,7 @@
 
 <robot name="gantry_crane" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:include filename="$(fnd gantry_robot_hvl)/urdf/gantry_v1.urdf.gazebo" />
+  <xacro:include filename="$(find gantry_robot_hvl)/urdf/gantry_v1.urdf.gazebo" />
 
 
   <gazebo>
