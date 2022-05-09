@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find gantry_robot_hvl)/urdf/gantry_v1.urdf.xacro'"/>
+  <!-- <remap from="/joint_states" to="/gantry_crane/joint_states" /> -->
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+    <param name="publish_frequency" type="double" value="100.0" />
+    <param name="tf_prefix" value="gantry_crane" />
+  </node>
+
+  <rosparam file="$(find gantry_robot_hvl)/config/gantry_robot_control.yaml" command="load"/>
+
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="gantry_crane"
+    args="joint_state_controller h_beam_controller trolly_controller crane_controller"/>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find gantry_robot_hvl)/rviz/urdf.rviz"/>
+
+
+  <arg name="world" default="empty"/>
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find gantry_robot_hvl)/worlds/my_world.world"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+
+
+  <node name="gantry_robot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+    args="-urdf -param robot_description -model gantry_robot -robot_namespace gantry_crane" />
+
+  </launch>
