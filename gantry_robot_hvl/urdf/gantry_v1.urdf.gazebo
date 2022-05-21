@@ -12,33 +12,33 @@
 
 
   <gazebo reference="left_support_arch_link">
-    <mu1>0.4</mu1>
-    <mu2>0.4</mu2>
-    <material>Gazebo/Yellow</material>
+    <mu1>1.4</mu1>
+    <mu2>1.4</mu2>
+    <material>Gazebo/DarkYellow</material>
   </gazebo>
 
   <gazebo reference="right_support_arch_link">
-    <mu1>0.4</mu1>
-    <mu2>0.4</mu2>
-    <material>Gazebo/Yellow</material>
+    <mu1>1.4</mu1>
+    <mu2>1.4</mu2>
+    <material>Gazebo/DarkYellow</material>
   </gazebo>
 
   <gazebo reference="h_beam_link">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Blue</material>
+    <material>Gazebo/DarkGrey</material>
   </gazebo>
 
   <gazebo reference="trolly_link">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Orange</material>
+    <material>Gazebo/DarkYellow</material>
   </gazebo>
 
   <gazebo reference="crane_link">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Red</material>
+    <material>Gazebo/DarkGrey</material>
   </gazebo>
 
 

@@ -6,13 +6,6 @@
   <xacro:include filename="$(find gantry_robot_hvl)/urdf/gantry_v1.urdf.gazebo" />
 
 
-  <!-- <gazebo>
-    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-      <robotNamespace>/gantry_crane</robotNamespace>
-    </plugin>
-  </gazebo> -->
-
-
   <link name="world"/>
 
   <joint name="world_joint_left" type="fixed">

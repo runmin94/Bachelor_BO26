@@ -2,12 +2,11 @@
 <launch>
 
   <param name="robot_description" command="$(find xacro)/xacro.py '$(find gantry_robot_hvl)/urdf/gantry_v1.urdf.xacro'"/>
-  <!-- <remap from="/joint_states" to="/gantry_crane/joint_states" /> -->
 
-  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
-    <param name="publish_frequency" type="double" value="100.0" />
-    <param name="tf_prefix" value="gantry_crane" />
-  </node>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" />
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen" />
+
 
   <rosparam file="$(find gantry_robot_hvl)/config/gantry_robot_control.yaml" command="load"/>
 

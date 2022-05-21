@@ -18,7 +18,7 @@ Visualization Manager:
       Name: TF
       Value: true
   Global Options:
-    Fixed Frame: world
+    Fixed Frame: /world
     Frame Rate: 30
   Name: root
   Tools:
