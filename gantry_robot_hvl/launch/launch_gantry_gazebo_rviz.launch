@@ -32,6 +32,8 @@
     <arg name="debug" value="$(arg debug)"/>
   </include>
 
+  <node pkg="tf" type="static_transform_publisher" name="crane2URbroadcaster" args="1 0 0 0 0 0 1 crane_link base_link 100" />
+
 
   <node name="gantry_robot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
     args="-urdf -param robot_description -model gantry_robot -robot_namespace gantry_crane" />
