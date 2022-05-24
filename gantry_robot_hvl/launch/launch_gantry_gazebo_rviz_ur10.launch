@@ -39,4 +39,8 @@
   <node name="gantry_robot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
     args="-urdf -param robot_description -model gantry_robot -robot_namespace gantry_crane" />
 
+  <include file="$(find gantry_robot_hvl)/ur_mods/ur10_mod.launch">
+  </include>
+
+
   </launch>

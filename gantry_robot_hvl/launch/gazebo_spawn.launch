@@ -4,7 +4,7 @@
     <param name="robot_description" command="$(find xacro)/xacro.py '$(find gantry_robot_hvl)/urdf/gantry_v1.urdf.xacro'"/>
     <!-- <remap from="/joint_states" to="/gantry_crane/joint_states" /> -->
 
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" />
+    <node name="crane_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" />
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen" />
 
 
@@ -13,7 +13,7 @@
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="gantry_crane"
       args="joint_state_controller h_beam_controller trolly_controller crane_controller"/>
 
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find gantry_robot_hvl)/rviz/urdf.rviz"/>
+ 
 
     <arg name="world" default="empty"/>
     <arg name="paused" default="false"/>

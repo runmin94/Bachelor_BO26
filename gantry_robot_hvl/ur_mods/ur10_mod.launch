@@ -5,16 +5,19 @@
   <arg name="gui" default="true" doc="Starts gazebo gui" />
   
 
+  
+
 
   <!-- send robot urdf to param server -->
-  <include file="$(find ur_description)/launch/ur10_upload_mod.launch">
+  <include file="$(find gantry_robot_hvl)/ur_mods/ur10_upload_mod.launch">
     <arg name="limited" value="$(arg limited)"/>
   </include>
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
-  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 0.1" respawn="false" output="screen" />
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -x 0 -y 0 -z 2.6 -R 3.141592 -P 0 -Y 0" respawn="false" output="screen" />
 
-  <include file="$(find ur_gazebo)/launch/controller_utils.launch"/>
+
+  <include file="$(find gantry_robot_hvl)/ur_mods/controller_utils_mod.launch"/>
 
   <!-- start this controller -->
   <rosparam file="$(find ur_gazebo)/controller/arm_controller_ur10.yaml" command="load"/>
