@@ -56,9 +56,9 @@
       </geometry>
     </visual>
     <collision>
-      <origin rpy="0 0 1.57057" xyz="0 0 1.75"/>
+      <origin rpy="0 0 1.57057" xyz="0 0 1.25"/>
       <geometry>
-        <box size="5 0.5 3.3"/>
+        <box size="5 0.5 2.5"/>
       </geometry>
     </collision>
     <inertial>
@@ -76,9 +76,9 @@
       </geometry>
     </visual>
     <collision>
-      <origin rpy="0 0 1.57057" xyz="0 0 1.75"/>
+      <origin rpy="0 0 1.57057" xyz="0 0 1.25"/>
       <geometry>
-        <box size="5 0.5 3.3"/>
+        <box size="5 0.5 2.5"/>
       </geometry>
     </collision>
     <inertial>
@@ -97,7 +97,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="-2.6 0 0.05"/>
       <geometry>
-        <box size="10 0.1 0.75"/>
+        <box size="5 0.1 0.35"/>
       </geometry>
     </collision>
     <inertial>
@@ -203,9 +203,9 @@
       </geometry>
     </visual>
     <collision>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 0.05"/>
       <geometry>
-        <box size="1.2 2 0.1"/>
+        <box size="0.6 1 0.05"/>
       </geometry>
     </collision>
     <inertial>
@@ -233,9 +233,9 @@
       </geometry>
     </visual>
     <collision>
-      <origin rpy="0 0 0" xyz="0 0 0.1"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.075"/>
       <geometry>
-        <box size="1.4 1 0.1"/>
+        <box size="0.7 0.5 0.05"/>
       </geometry>
     </collision>
     <inertial>
@@ -250,7 +250,7 @@
     <child link="crane_link"/>
     <axis rpy="0 0 0" xyz="0 0 1"/>
     <calibration rising="0.0"/>
-    <dynamics damping="0.0" friction="10.0"/>
+    <dynamics damping="10.0" friction="100.0"/>
     <limit effort="30" lower="-1.1" upper="0" velocity="1.0"/>
     <safety_controller k_position="15" k_velocity="10" soft_lower_limit="-1" soft_upper_limit="0"/>
   </joint>
