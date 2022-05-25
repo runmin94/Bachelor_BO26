@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="paused" default="false"/>
+
+    <!-- startup simulated world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" default="worlds/empty.world"/>
+        <arg name="paused" value="$(arg paused)"/>
+    </include>
+
+    <!-- send robot urdf to param server -->
+    <include file="$(find gantry_robot_hvl)/launch/robot_load_test.launch"/>
+
+    <!-- push robot_description to factory and spawn robot in gazebo -->
+    <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 0.1" respawn="false" output="screen" />
+
+    <!-- convert joint states to TF transforms for rviz, etc -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" />
+
+    <!-- init and start Gazebo ros_control interface -->
+    <include file="$(find gantry_robot_hvl)/launch/controll_test.launch"/>
+</launch>

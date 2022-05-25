@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<robot name="gantry_crane" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find gantry_robot_hvl)/urdf/gantry_v1.urdf.gazebo" />
+
+
+  <link name="world"/>
+
+  <joint name="world_joint_left" type="fixed">
+    <parent link="world"/>
+    <child link="left_support_arch_link" />
+    <origin xyz="2.6 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="world_joint_right" type="fixed">
+    <parent link="world"/>
+    <child link="right_support_arch_link" />
+    <origin xyz="-2.6 0 0" rpy="0 0 0"/>
+  </joint>
+
+
+  
+  <xacro:property name="support_scale_x" value= "0.0005" />
+  <xacro:property name="support_scale_y" value= "0.0005" />
+  <xacro:property name="support_scale_z" value= "0.00075" />
+  <xacro:property name="high_scale" value= "0.0005" />
+  <xacro:property name="mid_scale" value= "0.005" />
+  <xacro:property name="low_scale" value= "0.5" />
+
+  <xacro:property name="support_arch_length" value="5" />
+  <xacro:property name="support_arch_width" value="0.5" />
+  <xacro:property name="support_arch_height" value="3.3" />
+  <xacro:property name="support_arch_density" value="1" />
+  <xacro:property name="support_arch_mass" value="${support_arch_length*support_arch_height*support_arch_width*support_arch_density}" />
+
+    <!--Support_arch left side -->
+  <link name="left_support_arch_link">
+    <visual>
+      <origin  rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://gantry_robot_hvl/meshes/support_arch_v2.stl" scale="${support_scale_x} ${support_scale_y} ${support_scale_z}"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 1.75" rpy="0 0 1.57057"/>
+      <geometry>
+        <box size="${support_arch_length} ${support_arch_width} ${support_arch_height}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 1.75" rpy="0 0 1.57057"/>
+      <mass value="${support_arch_mass}"/>
+      <inertia
+        ixx="${support_arch_mass*(pow(support_arch_height,2) + pow(support_arch_width,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${support_arch_mass*(pow(support_arch_length,2) + pow(support_arch_height,2))/12}" iyz="0.0"
+        izz="${support_arch_mass*(pow(support_arch_length,2) + pow(support_arch_width,2))/12}"/>
+      </inertial>
+  </link>
+
+    <!--Support_arch right side -->
+  <link name="right_support_arch_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://gantry_robot_hvl/meshes/support_arch_v2.stl" scale="${support_scale_x} ${support_scale_y} ${support_scale_z}"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 0 1.75" rpy="0 0 1.57057"/>
+        <geometry>
+          <box size="${support_arch_length} ${support_arch_width} ${support_arch_height}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 1.75" rpy="0 0 1.57057"/>
+        <mass value="${support_arch_mass}"/>
+        <inertia
+          ixx="${support_arch_mass*(pow(support_arch_height,2) + pow(support_arch_width,2))/12}" ixy="0.0" ixz="0.0"
+          iyy="${support_arch_mass*(pow(support_arch_length,2) + pow(support_arch_height,2))/12}" iyz="0.0"
+          izz="${support_arch_mass*(pow(support_arch_length,2) + pow(support_arch_width,2))/12}"/>
+        </inertial>
+  </link>
+
+      <!-- =================================H-beam=================================== -->
+      <xacro:property name="h_beam_length" value="10" />
+      <xacro:property name="h_beam_width" value="0.1" />
+      <xacro:property name="h_beam_height" value="0.75" />
+      <xacro:property name="h_beam_density" value="1" />
+      <xacro:property name="h_beam_mass" value="${h_beam_length*h_beam_height*h_beam_width*h_beam_density}" />
+
+
+  <link name="h_beam_link">
+        <visual>
+          <origin xyz="-2.6 -0.25 0.25" rpy="0 0 0"/>
+          <geometry>
+            <mesh filename="package://gantry_robot_hvl/meshes/H-Beam_v3.stl" scale="${low_scale} ${low_scale} ${low_scale}"/>
+          </geometry>
+        </visual>
+        <collision>
+          <origin xyz="-2.6 0 0.05" rpy="0 0 0"/>
+          <geometry>
+            <box size="${h_beam_length} ${h_beam_width} ${h_beam_height}"/>
+          </geometry>
+        </collision>
+        <inertial>
+          <origin xyz="-2.6 0 0.05" rpy="0 0 0"/>
+          <mass value="${h_beam_mass}"/>
+          <inertia
+            ixx="${h_beam_mass*(pow(h_beam_height,2) + pow(h_beam_width,2))/12}" ixy="0.0" ixz="0.0"
+            iyy="${h_beam_mass*(pow(h_beam_length,2) + pow(h_beam_height,2))/12}" iyz="0.0"
+            izz="${h_beam_mass*(pow(h_beam_length,2) + pow(h_beam_width,2))/12}"/>
+          </inertial>
+  </link>
+
+        <!-- ====================== H-Beam left joint ============================== -->
+  <joint name="h_beam_joint_left" type="prismatic">
+          <origin xyz="0 0 3.1" rpy="0 0 0"/>
+          <parent link="left_support_arch_link"/>
+          <child link="h_beam_link"/>
+          <axis xyz="0 1 0" rpy="0 0 0"/>
+
+          <calibration rising="0.0"/>
+          <dynamics damping="0.0" friction="1.0"/>
+          <limit effort="30" velocity="1.0" lower="-2" upper="2" />
+          <safety_controller k_velocity="10" k_position="15" soft_lower_limit="-1.75" soft_upper_limit="1.75" />
+  </joint>
+
+        <!-- H-beam wheels -->
+
+        <xacro:property name="wheel_width" value="0.1" />
+        <xacro:property name="wheel_radius" value="0.175" />
+        <xacro:property name="wheel_x" value="0.1" />
+        <xacro:property name="wheel_x_right" value="-5.3" />
+        <xacro:property name="wheel_y" value="0.225" />
+        <xacro:property name="wheel_z" value="0.375" />
+        
+
+
+  <link name="front_left_wheel">
+          <visual name="flw">
+            <origin xyz="0 0 0 " rpy="0 0 0"/>
+            <geometry>
+              <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            </geometry>
+          </visual>
+          <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+              <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            </geometry>
+          </collision>
+
+  </link>
+
+  <joint type="fixed" name="front_left_wheel_joint">
+          <origin xyz="${wheel_x} ${wheel_y} -${wheel_z}" rpy="1.57057 0 1.57057"/>
+          <child link="front_left_wheel"/>
+          <parent link="h_beam_link"/>
+        </joint>
+
+  <link name="back_left_wheel">
+          <visual name="blw">
+            <origin xyz="0 0 0 " rpy="0 0 0"/>
+            <geometry>
+              <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            </geometry>
+          </visual>
+          <collision>
+            <origin xyz="0 0 0 " rpy="0 0 0"/>
+            <geometry>
+              <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            </geometry>
+          </collision>
+  </link>
+
+  <joint type="fixed" name="back_left_wheel_joint">
+          <origin xyz="${wheel_x} -${wheel_y} -${wheel_z}" rpy="1.57057 0 1.57057"/>
+          <child link="back_left_wheel"/>
+          <parent link="h_beam_link"/>
+  </joint>
+
+  <link name="front_right_wheel">
+          <visual name="frw">
+            <origin xyz="0 0 0 " rpy="0 0 0"/>
+            <geometry>
+              <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            </geometry>
+          </visual>
+          <collision>
+            <origin xyz="0 0 0 " rpy="0 0 0"/>
+            <geometry>
+              <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            </geometry>
+          </collision>
+  </link>
+
+  <joint type="fixed" name="front_right_wheel_joint">
+          <origin xyz="${wheel_x_right} ${wheel_y} -${wheel_z}" rpy="1.57057 0 1.57057"/>
+          <child link="front_right_wheel"/>
+          <parent link="h_beam_link"/>
+  </joint>
+
+  <link name="back_right_wheel">
+          <visual name="brw">
+            <origin xyz="0 0 0 " rpy="0 0 0"/>
+            <geometry>
+              <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            </geometry>
+          </visual>
+          <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+              <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+            </geometry>
+          </collision>
+  </link>
+
+  <joint type="fixed" name="back_right_wheel_joint">
+          <origin xyz="${wheel_x_right} -${wheel_y} -${wheel_z}" rpy="1.57057 0 1.57057"/>
+          <child link="back_right_wheel"/>
+          <parent link="h_beam_link"/>
+  </joint>
+
+
+        <!-- ==============Trolly================ -->
+
+        <xacro:property name="trolly_length" value="1.2" />
+        <xacro:property name="trolly_width" value="2" />
+        <xacro:property name="trolly_height" value="0.1" />
+        <xacro:property name="trolly_density" value="1" />
+        <xacro:property name="trolly_mass" value="${trolly_length*trolly_height*trolly_width*trolly_density}" />
+        <xacro:property name="trolly_x" value="-2.6" />
+        <xacro:property name="trolly_y" value="0" />
+        <xacro:property name="trolly_z" value="-0.375" />
+
+
+
+  <link name="trolly_link">
+          <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+              <mesh filename="package://gantry_robot_hvl/meshes/trolly_v3.stl" scale="${mid_scale} ${mid_scale} ${mid_scale}"/>
+            </geometry>
+          </visual>
+          <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+              <box size="${trolly_length} ${trolly_width} ${trolly_height}"/>
+            </geometry>
+          </collision>
+          <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="${trolly_mass}"/>
+            <inertia
+              ixx="${trolly_mass*(pow(trolly_height,2) + pow(trolly_width,2))/12}" ixy="0.0" ixz="0.0"
+              iyy="${trolly_mass*(pow(trolly_length,2) + pow(trolly_height,2))/12}" iyz="0.0"
+              izz="${trolly_mass*(pow(trolly_length,2) + pow(trolly_width,2))/12}"/>
+            </inertial>
+  </link>
+
+  <joint name="trolly_joint" type="prismatic">
+            <origin xyz="${trolly_x} ${trolly_y} ${trolly_z}" rpy="0 0 1.57057"/>
+            <parent link="h_beam_link"/>
+            <child link="trolly_link"/>
+            <axis xyz="0 1 0" rpy="0 0 0"/>
+
+            <calibration rising="0.0"/>
+            <dynamics damping="0.0" friction="1.0"/>
+            <limit effort="30" velocity="1.0" lower="-2" upper="2" />
+            <safety_controller k_velocity="10" k_position="15" soft_lower_limit="-1.75" soft_upper_limit="1.75" />
+  </joint>
+
+          <!-- ========================= Crane ======================-->
+
+          <xacro:property name="crane_length" value="1.4" />
+          <xacro:property name="crane_width" value="1" />
+          <xacro:property name="crane_height" value="0.1" />
+          <xacro:property name="crane_density" value="1" />
+          <xacro:property name="crane_mass" value="${crane_length*crane_height*crane_width*crane_density}" />
+          <xacro:property name="crane_x" value="0" />
+          <xacro:property name="crane_y" value="0" />
+          <xacro:property name="crane_z" value="0" />
+
+
+
+  <link name="crane_link">
+            <visual>
+              <origin xyz="0 0 0" rpy="1.57057 0 0"/>
+              <geometry>
+                <mesh filename="package://gantry_robot_hvl/meshes/crane_v3.stl" scale="${mid_scale} ${mid_scale} ${mid_scale}"/>
+              </geometry>
+            </visual>
+            <collision>
+              <origin xyz="0 0 0.1" rpy="0 0 0"/>
+              <geometry>
+                <box size="${crane_length} ${crane_width} ${crane_height}"/>
+              </geometry>
+            </collision>
+            <inertial>
+              <origin xyz="0 0 0.1" rpy="1.57057 0 0"/>
+              <mass value="${crane_mass}"/>
+              <inertia
+                ixx="${crane_mass*(pow(crane_height,2) + pow(crane_width,2))/12}" ixy="0.0" ixz="0.0"
+                iyy="${crane_mass*(pow(crane_length,2) + pow(crane_height,2))/12}" iyz="0.0"
+                izz="${crane_mass*(pow(crane_length,2) + pow(crane_width,2))/12}"/>
+              </inertial>
+  </link>
+
+  <joint name="crane_joint" type="prismatic">
+              <origin xyz="0 0 0" rpy="0 0 0"/>
+              <parent link="trolly_link"/>
+              <child link="crane_link"/>
+              <axis xyz="0 0 1" rpy="0 0 0"/>
+
+              <calibration rising="0.0"/>
+              <dynamics damping="0.0" friction="10.0"/>
+              <limit effort="30" velocity="1.0" lower="-1.1" upper="0" />
+              <safety_controller k_velocity="10" k_position="15" soft_lower_limit="-1" soft_upper_limit="0" />
+  </joint>
+
+            <!-- ========================transmission============================ -->
+
+
+  <transmission name="h_beam_transmission">
+              <type>transmission_interface/SimpleTransmission</type>
+              <joint name="h_beam_joint_left">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+              </joint>
+              <actuator name="h_beam_motor">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+              </actuator>
+  </transmission>
+
+  <transmission name="trolly_trasmission">
+              <type>transmission_interface/SimpleTransmission</type>
+              <joint name="trolly_joint">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+              </joint>
+              <actuator name="trolly_motor">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+              </actuator>
+  </transmission>
+
+  <transmission name="crane_transmission">
+              <type>transmission_interface/SimpleTransmission</type>
+              <joint name="crane_joint">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+              </joint>
+              <actuator name="crane_motor">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+              </actuator>
+  </transmission>
+
+
+
+
+
+</robot>

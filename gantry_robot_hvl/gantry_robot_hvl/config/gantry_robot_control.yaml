@@ -1,0 +1,18 @@
+gantry_crane:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 1000
+
+  # Controller
+  h_beam_controller:
+    type: position_controllers/JointPositionController
+    joint: h_beam_joint_left
+
+  trolly_controller:
+    type: position_controllers/JointPositionController
+    joint: trolly_joint
+
+  crane_controller:
+    type: position_controllers/JointPositionController
+    joint: crane_joint
