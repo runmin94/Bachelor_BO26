@@ -24,6 +24,21 @@ hardware_interface:
 joint_state_controller:
   type: joint_state_controller/JointStateController
   publish_rate: 50
+  panda_arm_controller:
+    type: effort_controllers/JointTrajectoryController
+    joints:
+    - shoulder_pan_joint
+    - shoulder_lift_joint
+    - elbow_joint
+    - wrist_1_joint
+    - wrist_2_joint
+    - wrist_3_joint
+
+    constraints:
+        goal_time: 2.0
+    state_publish_rate: 25
+
+
 controller_list:
   - name: gantry_crane_group_controller
     action_ns: follow_joint_trajectory
@@ -36,6 +51,18 @@ controller_list:
   - name: UR10_group_controller
     action_ns: follow_joint_trajectory
     default: True
+    type: FollowJointTrajectory
+    joints:
+      - shoulder_pan_joint
+      - shoulder_lift_joint
+      - elbow_joint
+      - wrist_1_joint
+      - wrist_2_joint
+      - wrist_3_joint
+
+controller_list:
+  - name: "arm_controller"
+    action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
     joints:
       - shoulder_pan_joint
