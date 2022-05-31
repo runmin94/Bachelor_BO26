@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-from shutil import move
 import sys
 import copy
 import rospy
+from math import pi
 import moveit_commander
 import moveit_msgs.msg
 import geometry_msgs.msg
@@ -34,37 +34,77 @@ print("pose target: %s" % pose_goal)
 print("pose %s" % move_group.get_current_pose())
 print("current pose typ %s" % type(move_group.get_current_pose()))
 print( "pose target type %s" % type(pose_goal))
-pose_goal.orientation.w = 1.0
-pose_goal.orientation.x = -0.5
-pose_goal.orientation.y = 0.5
-pose_goal.orientation.z = 2.0
+move_group.set_start_state_to_current_state()
+pose_goal.orientation.w = -5
+pose_goal.orientation.x = -10
+pose_goal.orientation.y = -10
+pose_goal.orientation.z = 1
 pose_goal.position.x = 0.7
 pose_goal.position.y = 0.7
 pose_goal.position.z = 2
 move_group.set_pose_target(pose_goal)
 
 plan1 = move_group.plan()
+move_group.execute(plan1, wait=True)
 print("pose target: %s" % pose_goal)
 #print("target pose: %s" % )
 ## Now, we call the planner to compute the plan and execute it.
 
-pose_goal2.orientation.w = 1.0
-pose_goal2.orientation.x = -0.5
-pose_goal2.orientation.y = 0.5
-pose_goal2.orientation.z = 2.0
-pose_goal2.position.x = -0.7
-pose_goal2.position.y = -0.7
-pose_goal2.position.z = 2
+group_variable_values = move_group.get_current_joint_values()
 
-move_group.clear_pose_targets()
+print("startpose %s:" % move_group.get_current_pose().pose)
 
-move_group.set_pose_target(pose_goal2)
+print("joint values: %s" % group_variable_values)
+
+group_variable_values[0] = -pi/2
+group_variable_values[1] = -pi/2
+group_variable_values[2] = pi/2
+group_variable_values[4] = pi/2
+
+print("joint values after move: %s" % group_variable_values)
+
+
+move_group.set_joint_value_target(group_variable_values)
+
+print("pose after move:  %s" % move_group.get_current_pose().pose)
 
 plan2 = move_group.plan()
+move_group.set_start_state_to_current_state()
 
-move_group.execute(plan1, wait=True)
+print("pose after move:  %s" % move_group.get_current_pose().pose)
 
-move_group.execute(plan2, wait=True)
+
+
+rospy.sleep(1)
+
+
+
+
+move_group.go(wait=False)
+
+
+# pose_goal2.orientation.w = -1.0
+# pose_goal2.orientation.x = pi/2
+# pose_goal2.orientation.y = pi/2
+# pose_goal2.orientation.z = pi/2
+# pose_goal2.position.x = -0.5
+# pose_goal2.position.y = -0.5
+# pose_goal2.position.z = 1.7
+
+
+
+# move_group.clear_pose_targets()
+
+#move_group.set_pose_target([-0.5, 0.5, 1.7, 0, -pi/2, 0])
+# move_group.set_start_state_to_current_state()
+# plan2 = move_group.plan()
+
+
+
+
+#move_group.execute(plan2, wait=True)
+
+#move_group.set_position_target(0.2 0.2 1.5)
 
 
 

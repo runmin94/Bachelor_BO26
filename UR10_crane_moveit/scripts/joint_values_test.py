@@ -101,7 +101,7 @@ rospy.sleep(1)
 
 
 plan_cart = plan_cartesian_path()
-#group.go(wait=False)
+group.go(wait=False)
 execute_plan(plan_cart)
 
 
