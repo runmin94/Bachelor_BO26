@@ -18,7 +18,7 @@ def move_group():
 
 
     #TurtleBot will stop if we don't keep telling it to move.  How often should we tell it to move? 10 HZ
-    r = rospy.Rate(10);
+    r = rospy.Rate(10)
 
     move_dict = {
     "h_beam": 0.0,

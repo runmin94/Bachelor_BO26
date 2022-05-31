@@ -6,7 +6,7 @@
 
   <node name="crane_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" />
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen" />
-    <param name="use_gui" value="True"/>
+    <param name="use_gui" value="False"/>
 
 
   <rosparam file="$(find gantry_robot_hvl)/config/gantry_robot_control.yaml" command="load"/>

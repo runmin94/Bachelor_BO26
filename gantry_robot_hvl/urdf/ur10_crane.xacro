@@ -14,9 +14,6 @@
           </joint>
 
 
-
-
-
         <joint name="attachment_joint" type="fixed">
             <parent link="crane_link" />
             <child link="base_link" />
